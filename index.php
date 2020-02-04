@@ -3,7 +3,7 @@
 
 <?php 
 	$productos=seleccionarOfertasPortada(NUMOFERTAS);
-	
+/*Prueba desde casa*/	
 ?>
 
 <main role="main">
