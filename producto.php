@@ -1,10 +1,14 @@
-<?php require_once("inc/encabezado.php") ?>
-<?php require_once("baseDeDatos/bbdd.php") ?>
+<?php session_start(); ?>
 <?php require_once("inc/funciones.php") ?>
-
+<?php require_once("baseDeDatos/bbdd.php") ?>
 
 <?php 
 	$idProducto= recoge('id'); //Recojo la id de la url
+	
+	if($idProducto<1){
+		$idProducto=1;
+	}
+	
 	$producto = seleccionarProducto($idProducto);
 	
 	$nombre=$producto['nombre'];
@@ -16,6 +20,17 @@
 	$online=$producto['online'];
 	
 ?>
+
+<?php 	
+		$pagina = "productos"; 
+		$titulo = $nombre;
+?>
+<?php require_once("inc/encabezado.php") ?>
+
+
+
+
+
 
 <main role="main">
 

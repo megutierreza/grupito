@@ -1,6 +1,14 @@
-<?php require_once("inc/encabezado.php") ?>
+<?php session_start(); ?>
 <?php require_once("baseDeDatos/bbdd.php") ?>
 <?php require_once("inc/funciones.php") ?>
+
+
+<?php 	
+		$pagina = "index"; 
+		$titulo = "Mi Grupito";
+?>
+
+<?php require_once("inc/encabezado.php") ?>
 
 <?php 
 	$productos=seleccionarOfertasPortada(NUMOFERTAS);

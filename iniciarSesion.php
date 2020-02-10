@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php 
 	require_once "admin/inc/bbdd.php";
 	require_once "admin/inc/funciones.php";
