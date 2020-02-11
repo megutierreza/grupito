@@ -63,7 +63,7 @@
 		
 		if($userOK){
 			
-			$_SESSION["usuario"]="$resultado[usuario]";  
+			$_SESSION["usuario"]=$resultado['nombre'];  
 			
 			if($usuario=="admin" or $usuario=="Admin"){
 				

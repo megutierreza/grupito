@@ -71,7 +71,7 @@
 				<a href="carrito.php" class="nav-link"><i class="fas fa-shopping-cart fa-1x"></i></a>
 		  </li>
 		
-		<?php 
+		<?php 		
 			if(isset($_SESSION['usuario'])){
 		?>
 		

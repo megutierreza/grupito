@@ -1,9 +1,10 @@
 <?php session_start(); ?>
 <?php require_once("baseDeDatos/bbdd.php") ?>
 <?php require_once("inc/funciones.php") ?>
+<?php require_once("admin/inc/encabezado.php"); ?>
 
 
-<main role="main">
+<main role="main" class="container">
    
 	  
 <?php
@@ -25,3 +26,6 @@
 ?>
 </main>
 
+<?php
+	require_once "inc/pie.php";
+?>
