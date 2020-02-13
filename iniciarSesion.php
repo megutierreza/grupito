@@ -1,8 +1,13 @@
 <?php session_start(); ?>
 <?php 
-	require_once "admin/inc/bbdd.php";
-	require_once "admin/inc/funciones.php";
-	require_once "admin/inc/encabezado.php";
+	require_once "baseDeDatos/bbdd.php";
+	require_once "inc/funciones.php";
+	
+	$pagina="iniciarSesion";
+	$titulo="Iniciar Sesión";
+	
+	
+	require_once "inc/encabezado.php";
 ?>
 
 <?php
@@ -23,6 +28,7 @@
 		
 	</div>
 	
+	<input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 
 	<button type="submit" class="btn btn-primary" name="iniciar" value="iniciar">Iniciar</button>
 	<a href='crearCuenta.php' class='btn btn-primary' role='alert'>Crear cuenta nueva</a>
@@ -56,42 +62,60 @@
 	}else{
 		$usuario=recoge("usuario");
 		$contrasena=recoge("contrasena");
+		$errores = "";
 		
-		$resultado=seleccionarUsuario($usuario);
-		
-		$userOK=password_verify($contrasena,$resultado['password']);
-		
-		if($userOK){
+			$recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify'; 
+			$recaptcha_secret = CLAVE_SECRETA; 
+			$recaptcha_response = recoge('recaptcha_response'); 
+			$recaptcha = file_get_contents($recaptcha_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response); 
+			$recaptcha = json_decode($recaptcha); 
 			
-			$_SESSION["usuario"]=$resultado['nombre'];  
+			if($recaptcha->score < 0.7){
 			
-			if($usuario=="admin" or $usuario=="Admin"){
+				$errores = $errores."Robot";
+			
+			} else {
+			
+				$resultado=seleccionarUsuario($usuario);
+		
+				$userOK=password_verify($contrasena,$resultado['password']);
 				
-				header("location:admin/menuAdmin.php");
-				
-			}else{
-				
-				header("location:index.php");
-				
+				if($userOK){
+					
+					$_SESSION["usuario"]=$resultado['nombre'];  
+					
+					if($usuario=="admin" or $usuario=="Admin"){
+						
+						header("location:admin/menuAdmin.php");
+						
+					}else{
+						
+						header("location:index.php");
+						
+					}	
+		
+				}else{
+					
+					$errores = $errores . "Usuario o contraseña incorrectos";
+			
+					
+				}		
+			
 			}
-			
-			
 		
+			if ($errores != ""){
+				echo $errores;
+				imprimirFormulario($usuario);
+			}
 		
-		
-		?>
-		
-		
-		<?php
-		
-		}else{
-			echo "Usuario o contraseña incorrectos";
-	
-			imprimirFormulario($usuario);
 		}
 		
 		
-	}
+		
+		
+		
+		
+	
 ?>
 
 

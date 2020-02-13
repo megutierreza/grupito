@@ -250,7 +250,7 @@ function seleccionarUsuario($usuario){
 	
 	try{
 		
-		$sql = "SELECT * FROM usuarios WHERE usuario=:usuario";
+		$sql = "SELECT * FROM usuarios WHERE nombre=:usuario";
 		
 		$stmt = $con->prepare($sql);
 		

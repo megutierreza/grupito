@@ -1,0 +1,6 @@
+
+13 February, 2020, 1:35 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
+13 February, 2020, 1:37 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
+13 February, 2020, 2:02 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
+13 February, 2020, 2:02 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
+13 February, 2020, 2:02 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
