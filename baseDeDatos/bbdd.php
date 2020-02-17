@@ -526,6 +526,59 @@ function seleccionarProducto($idProducto){
 	
 }
 
+//Function InsertarPedido
+
+function insertarPedido($idUsuario,$detallePedido,$total){
+	
+	$con = conectarBD();
+	
+	try{
+		
+		//para hacer que se meta todo o nada:
+		$conexion -> beginTransaction();
+		
+		$sql = "INSERT INTO pedidos (idUsuario, total) VALUES (:idUsuario, :total)";
+		
+		$sentencia =  $conexion -> prepare($sql);
+		
+		$sentencia -> bindparam(":idUsuario", $idUsuario);
+		$sentencia -> bindparam(":total", $total);
+		
+		$sentencia -> execute();
+		
+		$idPedido = $conexion->lastInsertId();
+		
+		foreach($detallePedido as $idProducto => $cantidad){
+			$producto = seleccionarProducto($idProducto);
+			$precio = $producto[precioOferta];
+			
+			$sql2 = "INSERT INTO detallePedido (idPedido, idProducto, cantidad, precio) VALUES (:idPedido, :idProducto, :cantidad, :precio)";
+			$sentencia =  $conexion -> prepare($sql2);
+		
+			$sentencia -> bindparam(":idPedido", $idPedido);
+			$sentencia -> bindparam(":idProducto", $idProducto);
+			$sentencia -> bindparam(":cantidad", $cantidad);
+			$sentencia -> bindparam(":precio", $precio);
+		
+			$sentencia -> execute();
+		}
+		
+		$conexion -> commit();
+		
+	}catch(PDOException $e){	
+			
+			$conexion -> rollback();
+			
+			echo "Error: Error al seleccionar los datos del producto: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $idPedido;
+	
+}
+
 
 
 
