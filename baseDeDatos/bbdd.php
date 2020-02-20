@@ -327,7 +327,7 @@ function seleccionarTodoUsuario(){
 	
 }
 
-//Función para actualizarUsuario
+//Función para actualizarUsuario contraseña
 function actualizarUsuario($usuario, $contrasena){
 	
 	$con = conectarBD();
@@ -341,6 +341,36 @@ function actualizarUsuario($usuario, $contrasena){
 		
 		$stmt->bindParam(':usuario',$usuario);
 		$stmt->bindParam(':contrasena',$contrasena);
+		
+		$stmt->execute();
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al actualizar el usuario: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $stmt->rowCount();
+}
+
+//Función para actualizarUsuario DATOS
+function actualizarDatosUsuario($nombre, $email, $apellidos, $direccion, $telefono){
+	
+	$con = conectarBD();
+	
+	try{
+
+		$sql = "UPDATE usuarios SET nombre=:nombre, email=:email, apellidos=:apellidos, direccion=:direccion, telefono=:telefono WHERE nombre=:nombre";
+		
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(':nombre',$nombre);
+		$stmt->bindParam(':email',$email);
+		$stmt->bindParam(':apellidos',$apellidos);
+		$stmt->bindParam(':direccion',$direccion);
+		$stmt->bindParam(':telefono',$telefono);
 		
 		$stmt->execute();
 		
@@ -535,25 +565,25 @@ function insertarPedido($idUsuario,$detallePedido,$total){
 	try{
 		
 		//para hacer que se meta todo o nada:
-		$conexion -> beginTransaction();
+		$con -> beginTransaction();
 		
 		$sql = "INSERT INTO pedidos (idUsuario, total) VALUES (:idUsuario, :total)";
 		
-		$sentencia =  $conexion -> prepare($sql);
+		$sentencia =  $con -> prepare($sql);
 		
 		$sentencia -> bindparam(":idUsuario", $idUsuario);
 		$sentencia -> bindparam(":total", $total);
 		
 		$sentencia -> execute();
 		
-		$idPedido = $conexion->lastInsertId();
+		$idPedido = $con->lastInsertId();
 		
 		foreach($detallePedido as $idProducto => $cantidad){
 			$producto = seleccionarProducto($idProducto);
-			$precio = $producto[precioOferta];
+			$precio = $producto['precioOferta'];
 			
 			$sql2 = "INSERT INTO detallePedido (idPedido, idProducto, cantidad, precio) VALUES (:idPedido, :idProducto, :cantidad, :precio)";
-			$sentencia =  $conexion -> prepare($sql2);
+			$sentencia =  $con -> prepare($sql2);
 		
 			$sentencia -> bindparam(":idPedido", $idPedido);
 			$sentencia -> bindparam(":idProducto", $idProducto);
@@ -563,7 +593,7 @@ function insertarPedido($idUsuario,$detallePedido,$total){
 			$sentencia -> execute();
 		}
 		
-		$conexion -> commit();
+		$con -> commit();
 		
 	}catch(PDOException $e){	
 			
@@ -576,6 +606,36 @@ function insertarPedido($idUsuario,$detallePedido,$total){
 	}
 	
 	return $idPedido;
+	
+}
+
+//Seleccionar pedidos//
+
+function seleccionarPedidos($idUsuario){
+		
+	$con = conectarBD();
+	
+	try{
+		
+		$sql = "SELECT * FROM pedidos WHERE idUsuario=:idUsuario";
+		
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(':idUsuario',$idUsuario, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al seleccionar los pedidos: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $rows;
 	
 }
 

@@ -78,7 +78,8 @@
 		</table>
 		
 		<p><a href="procesarCarrito.php?id=<?php echo $id; ?>&op=empty" class="btn btn-danger" >Vaciar carrito</a></p>
-		<p><a href="confirmarPedido.php" class="btn btn-success" >Confirmar pedido</a></p>
+		<?php $_SESSION['total']=$total ?>
+		<p><a href="confirmarPedido.php" class="btn btn-success ml-3" >Confirmar pedido</a></p>
 		
 	   </div>
 <?php

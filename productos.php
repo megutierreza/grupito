@@ -6,8 +6,8 @@
 		$pagina = "productos"; 
 		$titulo = "Todas nuestras ofertas";
 ?>
-<?php require_once("inc/encabezado.php") ?>
 
+<?php require_once("inc/encabezado.php") ?>
 
 <?php 
 	$productos=seleccionarTodasOfertas();
