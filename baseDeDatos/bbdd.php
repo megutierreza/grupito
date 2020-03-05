@@ -558,7 +558,7 @@ function seleccionarProducto($idProducto){
 
 //Function InsertarPedido
 
-function insertarPedido($idUsuario,$detallePedido,$total){
+function insertarPedido($idUsuario,$detallePedido,$total,$estado){
 	
 	$con = conectarBD();
 	
@@ -567,12 +567,13 @@ function insertarPedido($idUsuario,$detallePedido,$total){
 		//para hacer que se meta todo o nada:
 		$con -> beginTransaction();
 		
-		$sql = "INSERT INTO pedidos (idUsuario, total) VALUES (:idUsuario, :total)";
+		$sql = "INSERT INTO pedidos (idUsuario, total, estado) VALUES (:idUsuario, :total, :estado)";
 		
 		$sentencia =  $con -> prepare($sql);
 		
 		$sentencia -> bindparam(":idUsuario", $idUsuario);
 		$sentencia -> bindparam(":total", $total);
+		$sentencia -> bindparam(":estado", $estado);
 		
 		$sentencia -> execute();
 		
@@ -639,6 +640,141 @@ function seleccionarPedidos($idUsuario){
 	
 }
 
+/*function seleccionarTodosPedidos(){
+		
+	$con = conectarBD();
+	
+	try{
+		
+		$sql = "SELECT * FROM pedidos";
+		
+		$stmt = $con->query($sql);
+		
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al seleccionar los pedidos: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $rows;
+	
+}*/
+
+function seleccionarTodosPedidosPaginar($inicio, $pedidosPagina){
+		
+	$con = conectarBD();
+	
+	try{
+		
+		$sql = "SELECT * FROM pedidos LIMIT 0,4";
+		
+		$stmt = $con->prepare($sql);
+		
+		#$stmt->bindParam(':inicio',$inicio, PDO::PARAM_INT); /* Si necesitamos que sea un valor entero (INT) */
+		#$stmt->bindParam(':pedidosPagina',$pedidosPagina, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al seleccionar los pedidos: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $rows;
+	
+}
+
+//Función para actualizar el estado de un pedido
+function actualizarEstadoPedido($idPedido,$estado){
+	
+	$con = conectarBD();
+	
+	try{
+		
+		$sql = "UPDATE pedidos SET estado=:estado WHERE idPedido=:idPedido";
+		
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(':estado',$estado);
+		$stmt->bindParam(':idPedido',$idPedido);
+		
+		$stmt->execute();
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al actualizar el estado del pedido: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $stmt->rowCount();
+}
+//Función para seleccionar un pedido
+
+function seleccionarPedido($idPedido){
+		
+	$con = conectarBD();
+	
+	try{
+		
+		$sql = "SELECT * FROM pedidos WHERE idPedido=:idPedido";
+		
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(':idPedido',$idPedido, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		
+		$rows = $stmt->fetch(PDO::FETCH_ASSOC); //fech en vez de fetchAll porque devuelve solo 1 o ninguna
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al seleccionar los datos del pedido: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $rows;
+	
+}
+//Función para actualizar Pedidos
+function actualizarPedido($fecha, $total, $estado){
+	
+	$con = conectarBD();
+	
+	try{
+
+		$sql = "UPDATE pedidos SET fecha=:fecha, total=:total, estado=:estado WHERE idPedido=:idPedido";
+		
+		$stmt = $con->prepare($sql);
+		
+		$stmt->bindParam(':fecha',$fecha);
+		$stmt->bindParam(':total',$total);
+		$stmt->bindParam(':estado',$estado);
+
+		$stmt->execute();
+		
+	}catch(PDOException $e){	
+			
+			echo "Error: Error al actualizar el pedido: ".$e->getMessage();
+			
+			file_put_contents("PDOErrors.txt", "\r\n".date('j F, Y, g:i a').$e->getMessage(), FILE_APPEND);
+			exit;
+	}
+	
+	return $stmt->rowCount();
+}
 
 
 

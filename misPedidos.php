@@ -43,7 +43,7 @@
 					<th scope="col">Fecha</th>
 					<th scope="col">Total</th>
 					<th scope="col">Estado</th>
-			
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -68,7 +68,20 @@
 					<td><?php echo $fecha ?></td>
 					<td><?php echo $total ?></td>
 					<td><?php echo $estado ?></td>
-					<td><a class="btn btn-primary btn-lg" href="editarUsuario.php?usuario=<?php echo $nombre ?>" role="button">Editar</a></td>
+					
+					<?php 
+						if($estado=="Cancelado"){
+					?>
+							<td></td>
+					<?php
+						}else{
+					?>
+							<td>
+								<a class="btn btn-primary btn-lg" href="cancelarPedido.php?idPedido=<?php echo $idPedido ?>" role="button">Cancelar</a>
+							</td>	
+					<?php 
+					}
+					?>
 				</tr>
 				
 	<?php 

@@ -19,8 +19,8 @@
 					<h1 class="display-3">Su pedido ha sido realizado correctamente</h1><br />
 <?php 
 					$datosUsuario = seleccionarUsuario($_SESSION['usuario']);
-		
-					insertarPedido($datosUsuario['idUsuario'],$_SESSION['carrito'],$_SESSION['total']);
+					$estado="En proceso";
+					insertarPedido($datosUsuario['idUsuario'],$_SESSION['carrito'],$_SESSION['total'],$estado);
 					unset($_SESSION['carrito']);
 					unset($_SESSION['total']);
 ?>
