@@ -4,3 +4,4 @@
 13 February, 2020, 2:02 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
 13 February, 2020, 2:02 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
 13 February, 2020, 2:02 pmSQLSTATE[42S22]: Column not found: 1054 Unknown column 'usuario' in 'where clause'
+9 March, 2020, 10:28 amSQLSTATE[42S02]: Base table or view not found: 1146 Table 'proyectoblog.productos' doesn't exist
